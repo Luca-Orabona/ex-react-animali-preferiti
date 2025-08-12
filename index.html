@@ -21,6 +21,37 @@
     <footer>
         <p>Creato con amore da... un collega sbadato! 🐾</p>
     </footer>
+
+    <!-- REACT -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- COMPONENTE REACT -->
+    <script type="text/babel">
+
+        const Animali = () => {
+            const listaAnimali = ["Cane", "Gatto", "Leone", "Pinguino", "Koala"];
+            return (
+                <details>
+                    <summary>Animali</summary>
+                    <ul>
+                        {listaAnimali.map((listA, i) => (
+                            <li key={i}>{listA}</li>
+                        ))}
+                    </ul>
+                </details>
+            )
+        }     
+    </script>
+
+    <!-- AGGIUNTA DEL COMPONENTE REACT NEL TAG HTML -->
+    <script type="text/babel">
+
+        const animali = ReactDOM.createRoot(document.querySelector(".lista-animali"))
+        animali.render(<Animali />);
+
+    </script>
 </body>
 
 </html>
