@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I miei animali Preferiti</title>
     <link rel="stylesheet" href="style.css">
-    
+
 </head>
 
 <body>
@@ -30,21 +30,49 @@
 
     <!-- COMPONENTE REACT -->
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
+
+        function Modal({
+            title,
+            content,
+            show,
+            onConfirm = () => { },
+            onClose = () => { }
+        }) {
+            return show && ReactDOM.createPortal(
+                <div className="modal-container">
+                    <div className="modal">
+                        <h2>{title}</h2>
+                        <label htmlFor="animale">Nome animale</label>
+                        {content}
+                        <div>
+                            <button onClick={onClose}>Annulla</button>
+                            <button onClick={onConfirm}>conferma</button>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )
+        }
+
+      
+
         const Animali = () => {
             const animali = ["Cane", "Gatto", "Pappagallo", "Cavallo", "Panda"];
             const [listaAnimali, setListaAnimali] = useState([]);
+            const [show, setShow] = useState(false);
+            const [inputAnimal, setInputAnimal] = useState("");
+            
 
-            const animaleCasuale = () => {
-                const min = 0;
-                const max = animali.length - 1;
-                const num = Math.floor(Math.random() * (max - min + 1)) + min;
-                const nomeAnimale = animali[num]
-                setListaAnimali((curr => [...curr, nomeAnimale]))
+            const aggiungiAnimaleCasuale = () => {
+                if(!inputAnimal) return
+                setListaAnimali(curr => [...curr, inputAnimal]);
+                setInputAnimal("")
+                setShow(false)
             }
             return (
                 <>
-                    <button onClick={animaleCasuale}>Aggiungi animale casuale</button>
+                    <button onClick={() => setShow(true)}>Aggiungi animale casuale</button>
                     <details>
                         <summary>Animali</summary>
                         <ul>
@@ -53,6 +81,20 @@
                             ))}
                         </ul>
                     </details>
+                    <Modal
+                        title="Aggiungi animale"
+                        show={show}
+                        onClose={() => setShow(false)}
+                        onConfirm={aggiungiAnimaleCasuale}
+                        content={                            
+                            <input 
+                            id="animale"
+                            type="text"
+                            value={inputAnimal}
+                            onChange={(e) => setInputAnimal(e.target.value)}
+                            />
+                        }
+                    />
                 </>
             )
         }     
